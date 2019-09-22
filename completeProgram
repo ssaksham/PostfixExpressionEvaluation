@@ -1,0 +1,100 @@
+#include<iostream>
+#include<string>
+#include<math.h>
+#define maxsize 50
+using namespace std;
+class Stack{
+	int arr[maxsize];
+	public:
+	int top;
+	
+		Stack(){
+			top=-1;
+		}
+		bool pop(){
+			if(top==-1)
+			return false;
+			top--;
+			return true;
+		}
+		bool push(int value){
+			if((top)==maxsize-1)
+			return false;
+			top++;
+			arr[top]=value;
+			return true;
+		}
+		int peek(){
+			if(top==-1)
+			return -1;
+			return arr[top];
+		}
+		
+		
+		bool isEmpty(){
+			if(top==-1)
+			return true;
+			return false;
+		}
+};
+
+
+int evaluatePostfix(string exp){
+	Stack s;
+	for(int i=0;i<exp.length();i++){
+		if(exp[i]>='0'&&exp[i]<='9')
+		{
+			int value=exp[i]-'0';
+			s.push(value);
+		
+		}
+		
+		else
+		{
+		int rightOperand=s.peek();
+			s.pop();
+			if(s.isEmpty()){
+				cout<<"Wrong input";
+				return 0;
+			}
+			int leftOperand=s.peek();
+			
+			s.pop();
+			
+			switch(exp[i]){
+				case '+':
+					s.push(leftOperand+rightOperand);
+			  break;
+				case '-':
+					s.push(leftOperand-rightOperand);
+				break;
+				case '*':
+				s.push(leftOperand*rightOperand);
+				break;
+				case '/':
+					s.push(leftOperand/rightOperand);
+				break;
+			    case '^':
+					s.push(pow(leftOperand,rightOperand));
+				break;
+				
+			}
+			
+		}
+	}
+	
+	int evaluated=s.peek();
+	s.pop();
+	if(s.isEmpty()==true)
+	cout<<"Evaluated expression: "<<evaluated;
+	else
+	cout<<"Wrong input";
+	}
+
+int main(){
+string postfixExpr;
+cin>>postfixExpr;
+evaluatePostfix(postfixExpr);
+}
+
+
